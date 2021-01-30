@@ -12,6 +12,9 @@
         "color": "midnightblue",
         "width": 2
     },
+    "paths":{
+        "files": "files/presets"
+    },
 
     "version": "0.1"
 }

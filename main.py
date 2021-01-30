@@ -8,6 +8,11 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import json
 
+try:
+    from settings import settings_mpl
+except:
+    sys.exit('Delete file with settings!')
+
 from lissajousgen import LissajousGenerator
 
 
@@ -21,14 +26,14 @@ def validation_form(form):
 
 # TODO: RegExp
 class LissajousWindow(qt.QMainWindow):
-    def __init__(self):
-        super(LissajousWindow, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(LissajousWindow, self).__init__(*args, **kwargs)
 
-        self.settings = self.give_settings()
+        self.settings = settings_mpl
 
         self.generator = LissajousGenerator(resolution=100)
 
-        uic.loadUi("main_window.ui", self)
+        uic.loadUi(os.path.dirname(__file__) + "\main_window.ui", self)
         validation_form(self)
 
         self.setWindowTitle(f"Генератор фигур Лиссажу. Версия {self.settings.get('version', 'alpha')}. CC BY-SA 4.0 "
@@ -48,9 +53,10 @@ class LissajousWindow(qt.QMainWindow):
         self.plot_lissajous_figure()
 
         self.plot_button.clicked.connect(self.plot_button_click_handler)
-        self.save_button.clicked.connect(self.save_button_click_handler)
+        self.save_button.clicked.connect(self.save_image_button_handler)
         self.proportion_button.clicked.connect(self.proportion_ratio_click_handler)
         self.radio_grid.clicked.connect(self.plot_radio_grid_handler)
+        self.save_json_button.clicked.connect(self.save_json_button_handler)
 
     def plot_button_click_handler(self):
         """
@@ -82,10 +88,8 @@ class LissajousWindow(qt.QMainWindow):
         """
         Обновление фигуры
         """
-        # Удаляем устаревшие данные с графика
         if settings is None:
-            check_settings = self.get_settings()
-            settings = self.settings if not check_settings else check_settings
+            settings = self.get_settings()
 
         for line in self._ax.lines:
             line.remove()
@@ -105,18 +109,19 @@ class LissajousWindow(qt.QMainWindow):
 
         self._fc.draw()
 
-    def save_button_click_handler(self):
+    def save_path_handler(self, img=True):
         """
         Обработчик нажатия на кнопку сохранения настроек
         """
-        file_path, _ = qt.QFileDialog.getSaveFileName(None, "Сохранение изображения", "C:\\",
-                                                      "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
-
-        if file_path == "":
-            return
-
+        file_path, _ = qt.QFileDialog.getSaveFileName(*settings_mpl["messages"][["settings", "images"][img]])
+        return file_path
         # raise NotImplementedError("Тут всего одной строчки не хватает.")
-        self._fig.savefig(file_path)
+
+    def load_path_handler(self):
+        """
+        Обработчик нажатия на кнопку загрузки настроек
+        """
+        pass
 
     def proportion_ratio_click_handler(self):
         """
@@ -125,10 +130,24 @@ class LissajousWindow(qt.QMainWindow):
         h = min(self.height(), self.width())
         self.resize(h + 294, h)
 
-    @staticmethod
-    def give_settings(file="files/mpl.json"):
-        with open(file, mode="r", encoding="utf-8") as f:
-            return json.load(f)
+    # @staticmethod
+    # def give_settings(file=f"{os.path.dirname(__file__)}/files/mpl.json"):
+    #     with open(file, mode="r", encoding="utf-8") as f:
+    #         return json.load(f)
+    def save_image_button_handler(self):
+        path = self.save_path_handler()
+        if path == "":
+            return
+        self._fig.savefig(path)
+
+    def save_json_button_handler(self):
+        path = self.save_path_handler(img=False)
+        if path == "":
+            return
+        d = self.get_settings(params=True)
+        d.update(self.get_settings(params=False))
+        with open(path, 'w') as write_file:
+            json.dump(d, write_file, indent=2, ensure_ascii=False)
 
 
 if __name__ == "__main__":
