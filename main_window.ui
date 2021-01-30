@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>653</width>
-    <height>392</height>
+    <width>723</width>
+    <height>429</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -74,15 +74,23 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>400</width>
-        <height>300</height>
+        <width>470</width>
+        <height>370</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Verdana</family>
+       </font>
       </property>
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
       <property name="title">
        <string>График</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -122,8 +130,16 @@
         <height>1000</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <family>Verdana</family>
+       </font>
+      </property>
       <property name="title">
        <string>Найстройки</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
@@ -154,19 +170,51 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>2</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Фаза (δ)</string>
+          <string>Фаза (δ)       π /</string>
          </property>
         </widget>
        </item>
        <item row="3" column="1">
         <widget class="QLineEdit" name="phase_lineedit">
          <property name="text">
-          <string>pi / 2</string>
+          <string>2</string>
          </property>
         </widget>
+       </item>
+       <item row="4" column="0">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>2</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_3">
@@ -230,75 +278,6 @@
          </item>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QPushButton" name="proportion_button">
-         <property name="text">
-          <string>Выровнять</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="0" colspan="2">
-        <widget class="QPushButton" name="plot_button">
-         <property name="text">
-          <string>Обновить фигуру</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0" colspan="2">
-        <widget class="QPushButton" name="save_button">
-         <property name="text">
-          <string>Сохранить фигуру в файл</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>2</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="4" column="0">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>2</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="7" column="0">
         <spacer name="verticalSpacer_4">
          <property name="orientation">
@@ -314,6 +293,26 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="8" column="0">
+        <widget class="QPushButton" name="proportion_button">
+         <property name="text">
+          <string>Выровнять</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QRadioButton" name="radio_grid">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Сетка</string>
+         </property>
+        </widget>
        </item>
        <item row="9" column="0">
         <spacer name="verticalSpacer_5">
@@ -331,20 +330,60 @@
          </property>
         </spacer>
        </item>
-       <item row="8" column="1">
-        <widget class="QRadioButton" name="radio_grid">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
+       <item row="10" column="0" colspan="2">
+        <widget class="QPushButton" name="plot_button">
          <property name="text">
-          <string>Сетка</string>
+          <string>Обновить фигуру</string>
          </property>
         </widget>
        </item>
-       <item row="12" column="0" colspan="2">
+       <item row="11" column="0" colspan="2">
+        <widget class="QPushButton" name="save_button">
+         <property name="text">
+          <string>Сохранить фигуру в файл</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>5</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="15" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>5</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="14" column="0" colspan="2">
+        <widget class="QPushButton" name="load_json_button">
+         <property name="text">
+          <string>Загрузить настроки</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0" colspan="2">
         <widget class="QPushButton" name="save_json_button">
          <property name="text">
           <string>Сохранить настроки</string>
@@ -377,7 +416,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>653</width>
+     <width>723</width>
      <height>21</height>
     </rect>
    </property>

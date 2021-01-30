@@ -34,11 +34,11 @@ class LissajousGenerator:
         """
         self._resolution = resolution
 
-    def generate_figure(self, freq_x, freq_y, phase='pi/2', a=1, b=1):
+    def generate_figure(self, freq_x, freq_y, phase=2, a=1, b=1):
         """
         Генерирует фигуру (массивы x и y координат точек) с заданными частотами.
         """
-        phi = eval('np.' + phase) if not phase.strip().replace('.', '').isnumeric() else float(phase)
+        phi = np.pi / float(phase)
         t = np.linspace(0, 2 * np.pi, self._resolution)
         x = a * np.sin(freq_x * t + phi)
         y = b * np.sin(freq_y * t)

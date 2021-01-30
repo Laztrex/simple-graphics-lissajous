@@ -1,5 +1,9 @@
 import os
 
+os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/pics'), exist_ok=True)
+os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/presets'), exist_ok=True)
+
+
 settings_mpl = \
     {
         "color_map": {
@@ -9,20 +13,16 @@ settings_mpl = \
             "Синий": "midnightblue"
         },
 
-        "default": {
-            "freq_x": 1,
-            "freq_y": 3,
-            "color": "midnightblue",
-            "width": 2
-        },
         "paths": {
             "files": "files/presets/",
         },
 
         "messages": {
-            "images": [None, "Сохранение изображения", "C:\\",
+            "images": [None, "Сохранение изображения",
+                       f"{os.path.normpath(os.path.dirname(__file__) + '/files/pics')}",
                        "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) "],
-            "settings": [None, "Сохранение настроек", f"{os.path.normpath(os.path.dirname(__file__) + '/presets')}",
+            "settings": [None, "Сохранение настроек",
+                         f"{os.path.normpath(os.path.dirname(__file__) + '/files/presets')}",
                          "JSON(*.json);;All Files(*.*) "],
         },
 
