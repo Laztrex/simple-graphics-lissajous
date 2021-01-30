@@ -2,15 +2,15 @@ import numpy as np
 import time
 
 
-class lissajous_figure:
-    """
-    Фигуры Лиссажу.
-    Задаётся набором точек с координатами x и y.
-    """
-
-    def __init__(self, x_array, y_array):
-        self.x_arr = x_array
-        self.y_arr = y_array
+# class issajous_figure:
+#     """
+#     Фигуры Лиссажу.
+#     Задаётся набором точек с координатами x и y.
+#     """
+#
+#     def __init__(self, x_array, y_array):
+#         self.x_arr = x_array
+#         self.y_arr = y_array
 
 
 class LissajousGenerator:
@@ -38,7 +38,8 @@ class LissajousGenerator:
         """
         Генерирует фигуру (массивы x и y координат точек) с заданными частотами.
         """
-        t = np.linspace(0, 2 * np.pi, self._resolution)
-        x = a * np.sin(freq_x * t + eval('np.' + phase))
+        phi = eval('np.' + phase) if not phase.strip().replace('.', '').isnumeric() else float(phase)
+        t = np.linspace(-np.pi, np.pi, self._resolution)
+        x = a * np.sin(freq_x * t + phi)
         y = b * np.sin(freq_y * t)
-        return lissajous_figure(x, y)
+        return x, y

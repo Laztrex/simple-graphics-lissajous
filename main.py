@@ -8,7 +8,9 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import json
 
-from lissajou.lissajousgen import LissajousGenerator
+
+from lissajousgen import LissajousGenerator
+from setup import develop_sets
 
 # Настройки фигуры по умолчанию
 default_settings = {
@@ -40,11 +42,8 @@ class LissajousWindow(qt.QMainWindow):
         self.freq_x_lineedit.setValidator(input_validator)
 
         # Ставим версию и иконку
-        with open("version.txt", "r") as file:
-            version = file.readline()
-        self.setWindowTitle("Генератор фигур Лиссажу. Версия {}. CC BY-SA 4.0 Ivanov".format(
-            version  # TODO
-        ))
+        self.setWindowTitle(f"Генератор фигур Лиссажу. Версия {develop_sets['version']}. CC BY-SA 4.0 Ivanov")
+
         scriptDir = os.path.dirname(os.path.realpath(__file__))
         self.setWindowIcon(QtGui.QIcon(scriptDir + os.path.sep + "icon.bmp"))
 
@@ -73,8 +72,8 @@ class LissajousWindow(qt.QMainWindow):
             "freq_x": float(self.freq_x_lineedit.text()),  # TODO обработка входа
             "freq_y": float(self.freq_y_lineedit.text()),  # была ошибка x-y
             "phase": self.phase_lineedit.text(),
-            "a": float(self.amp_a_lineedit.text()),
-            "b": float(self.amp_b_lineedit.text())
+            # "a": float(self.amp_a_lineedit.text()),
+            # "b": float(self.amp_b_lineedit.text())
         } if params \
             else {"color": mpl_color_dict[self.color_combobox.currentText()],
                   "linewidth": int(self.width_combobox.currentText())}
@@ -90,9 +89,9 @@ class LissajousWindow(qt.QMainWindow):
         for line in self._ax.lines:
             line.remove()
 
-        figure = self.generator.generate_figure(**settings)
+        x_arr, y_arr = self.generator.generate_figure(**settings)
 
-        self._ax.plot(figure.x_arr, figure.y_arr,
+        self._ax.plot(x_arr, y_arr,
                       **self.get_settings(params=False))
 
         # self._fc.resize(400, 300)
