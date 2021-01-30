@@ -1,0 +1,17 @@
+{
+    "color_map": {
+        "Красный": "crimson",
+        "Зелёный": "green",
+        "Жёлтый": "gold",
+        "Синий": "midnightblue"
+    },
+
+    "default": {
+        "freq_x": 1,
+        "freq_y": 3,
+        "color": "midnightblue",
+        "width": 2
+    },
+
+    "version": "0.1"
+}
