@@ -38,3 +38,40 @@ pyinstaller --onefile --icon=files/lissajous.ico --noconsole main_lissajous.py
 ~~~
 main_lissajous.exe
 ~~~
+**Вид стартового интерфейса** 
+![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main.jpg)
+
+На текущий момент доступны функции:
+* Установка частот [1; 99]  
+(но желательно, конечно, устанавливать в рамках 
+[правильных пропорций](https://cutt.ly/pkysYfO))
+* Установка сдвига фаз
+* Изменение цвета линий
+* Регулирование толщины линии
+* Вернуть окно к заданному соотношению (Выровнять)
+* Отображение сетки
+* Обновить фигуру (после измененных параметров нужно применить)
+* Сохранить картинку полученной фигуру
+* Сохранить/загрузить пресет нужной фигуры
+
+Далее функционал будет расширяться.
+
+Поменяем настройки, получим новую фигуру.
+
+**Окно интерфейса после изменения настроек**
+![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2.jpg)
+
+**Менять цвет фигуры можно с помощью меню _Цвет линии_**
+![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_color.jpg)
+
+Для удобства есть свитч для отображения сетки и числовых осей
+**Вид сетки**
+![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_grid.jpg)
+
+Также рядом есть меню выбора толщины линии
+**Регулирование толщины линии**
+![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_grid_line.jpg)
+
+Окно интерфейса можно регулировать по всем направлениям.
+Однако предусмотрена кнопка _Выровнять_ для возврата к 
+стандартному соотношению 4/3
