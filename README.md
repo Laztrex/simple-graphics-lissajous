@@ -71,10 +71,12 @@ main_lissajous.exe
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_color.jpg)
 
 Для удобства есть свитч для отображения сетки и числовых осей
+
 **Вид сетки**
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_grid.jpg)
 
 Также рядом есть меню выбора толщины линии
+
 **Регулирование толщины линии**
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_grid_line.jpg)
 
