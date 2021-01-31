@@ -11,7 +11,7 @@
 * Загрузка/экспорт готовых пресетов настроек
 
 
->###Замечание
+>Замечание  
 >Иногда частоты по X и Y обозначают буквами $a$ и $b$.
 
 
@@ -71,10 +71,13 @@ main_lissajous.exe
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_color.jpg)
 
 Для удобства есть свитч для отображения сетки и числовых осей
+
 **Вид сетки**
+
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_grid.jpg)
 
 Также рядом есть меню выбора толщины линии
+
 **Регулирование толщины линии**
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_grid_line.jpg)
 
@@ -87,12 +90,14 @@ main_lissajous.exe
  а сохранить текущие настройки можно по кнопке _Сохранить настройки_
 Откроется диалоговое окно, где необходимо написать имя файла и место сохранения. 
 По умолчанию директория для картинок - _\files\pics_, для настроек - _\files\presets_
+
 **Пример сохранения настроек**
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/save_preset.jpg)
 
 Загрузка настроек осуществляется при нажатии кнопки _Загрузить настройки_.
 Данные будут считаны с файла и вставлена в соответствующие поля интерфейса. 
 Фигура пересоберётся.
+
 **Пример загрузки настроек**
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/load_preset.jpg)
 
