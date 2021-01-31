@@ -8,7 +8,7 @@ from unittest.mock import patch, call
 import lissajousgen
 from PyQt5 import QtCore, QtWidgets, QtTest
 
-import main_func
+import main_lissajous
 from lissajousgen import LissajousGenerator
 
 app = QtWidgets.QApplication(sys.argv)
@@ -25,7 +25,7 @@ class GlobalEngineTest(unittest.TestCase):
 
     def setUp(self):
         self.test_func = LissajousGenerator()
-        self.test_img = main_func.LissajousWindow()
+        self.test_img = main_lissajous.LissajousWindow()
         cprint(f'Вызван {self.shortDescription()}', flush=True, color='cyan')
 
     def tearDown(self):

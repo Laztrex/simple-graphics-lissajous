@@ -1,9 +1,5 @@
-import os
 
-os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/pics'), exist_ok=True)
-os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/presets'), exist_ok=True)
-
-settings_mpl = \
+SETTINGS_MPL = \
     {
         "color_map": {
             "Красный": "crimson",
@@ -13,21 +9,21 @@ settings_mpl = \
         },
 
         "paths": {
-            "files": f"{os.path.join(os.path.dirname(__file__) + '/files/presets/')}",
+            "files": "files/presets/",
             "icon": {
-                "main": f"{os.path.join(os.path.dirname(__file__) + '/files/icon.bmp')}",
-                "error": f"{os.path.join(os.path.dirname(__file__) + '/files/error.bmp')}"
+                "main": "files/icon.bmp",
+                "error": "files/error.bmp"
             },
 
-            "ui": f"{os.path.join(os.path.dirname(__file__) + '/main_window.ui')}"
+            "ui": "main_window.ui"
         },
 
         "dirs": {
             "images": [None, "Сохранение изображения",
-                       f"{os.path.join(os.path.dirname(__file__) + '/files/pics')}",
+                       "files/pics",
                        "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) "],
             "settings": [None, "Сохранение настроек",
-                         f"{os.path.join(os.path.dirname(__file__) + '/files/presets')}",
+                         "files/presets",
                          "JSON(*.json);;All Files(*.*) "],
         },
 

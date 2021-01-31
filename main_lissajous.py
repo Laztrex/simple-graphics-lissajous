@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import json
+import os
 import sys
-
-import PyQt5.QtWidgets as Qt
-from PyQt5 import uic, QtGui, QtCore
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
+
+import PyQt5.QtWidgets as Qt
+from PyQt5 import uic, QtGui, QtCore
 
 from lissajousgen import LissajousGenerator
 
@@ -31,6 +32,14 @@ def validation_form(form):
     form.phase_lineedit.setValidator(phase_validator)
 
 
+def check_paths():
+    """
+    Проверка рекомендуемо-необходимых директорий
+    """
+    os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/pics'), exist_ok=True)
+    os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/presets'), exist_ok=True)
+
+
 class LissajousWindow(Qt.QMainWindow):
     """
     Python 3.7.5
@@ -43,7 +52,7 @@ class LissajousWindow(Qt.QMainWindow):
         super(LissajousWindow, self).__init__(*args, **kwargs)
 
         try:
-            from settings import settings_mpl
+            from settings import SETTINGS_MPL
         except:
             msg = Qt.QMessageBox()
             msg.setIcon(Qt.QMessageBox.Critical)
@@ -51,16 +60,12 @@ class LissajousWindow(Qt.QMainWindow):
             msg.exec_()
             sys.exit('File with settings was deleted!')
 
-        self.settings = settings_mpl
+        self.settings = SETTINGS_MPL
+        check_paths()
 
         self.generator = LissajousGenerator()
 
-        uic.loadUi(self.settings["paths"]["ui"], self)
-        validation_form(self)
-
-        self.setWindowTitle(self.settings["message"].format(self.settings["version"]))
-
-        self.setWindowIcon(QtGui.QIcon(self.settings["paths"]["icon"]["main"]))
+        self.init_ui()
 
         self._fig = plt.Figure(figsize=(5, 4), dpi=100)
         self._ax = self._fig.add_subplot(1, 1, 1)
@@ -70,6 +75,17 @@ class LissajousWindow(Qt.QMainWindow):
         layout.addWidget(self._fc)
 
         self.plot_lissajous_figure()
+
+    def init_ui(self):
+        self.setStyleSheet("QLineEdit { border: 1px solid; border-color:#dcdcdc; border-radius: 4px;} "
+                           "QLineEdit:focus{border:1px solid gray; }")
+
+        uic.loadUi(self.settings["paths"]["ui"], self)
+        validation_form(self)
+
+        self.setWindowTitle(self.settings["message"].format(self.settings["version"]))
+
+        self.setWindowIcon(QtGui.QIcon(self.settings["paths"]["icon"]["main"]))
 
         self.plot_button.clicked.connect(self.plot_button_click_handler)
         self.save_button.clicked.connect(self.save_image_button_handler)
@@ -187,9 +203,9 @@ class LissajousWindow(Qt.QMainWindow):
         :param data: словарь с ключами "freq_x", "freq_y", "phase"
             :type data: dict
         """
-        self.freq_x_lineedit.setText(str(data["freq_x"]))
-        self.freq_y_lineedit.setText(str(data["freq_y"]))
-        self.phase_lineedit.setText(data["phase"])
+        self.freq_x_lineedit.setText(str(int(data["freq_x"])))
+        self.freq_y_lineedit.setText(str(int(data["freq_y"])))
+        self.phase_lineedit.setText(str(int(data["phase"])))
         self.plot_lissajous_figure()
 
     def proportion_ratio_click_handler(self):
@@ -219,3 +235,13 @@ class LissajousWindow(Qt.QMainWindow):
             d = self.get_settings(params=True)
             with open(path, 'w') as write_file:
                 json.dump(d, write_file, indent=2, ensure_ascii=False)
+
+
+if __name__ == "__main__":
+    app = Qt.QApplication(sys.argv)
+
+    main_window = LissajousWindow()
+
+    main_window.show()
+
+    app.exec_()

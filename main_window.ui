@@ -28,6 +28,11 @@
     <height>0</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Verdana</family>
+   </font>
+  </property>
   <property name="mouseTracking">
    <bool>false</bool>
   </property>
@@ -477,16 +482,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>720</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
