@@ -17,7 +17,6 @@ py==1.10.0
 pyinstaller==4.2
 pyinstaller-hooks-contrib==2020.11
 pyparsing==2.4.7
-pypiwin32==223
 PyQt5==5.15.2
 PyQt5-sip==12.8.1
 PyQt5-stubs==5.14.2.2
@@ -25,8 +24,6 @@ pytest==6.2.2
 pytest-qt==3.3.0
 python-dateutil==2.8.1
 pytz==2020.5
-pywin32==300
-pywin32-ctypes==0.2.0
 six==1.15.0
 termcolor==1.1.0
 toml==0.10.2
