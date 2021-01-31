@@ -37,6 +37,11 @@ pip install -r requirements.txt
 pyinstaller --onefile --icon=files/lissajous.ico --noconsole main_lissajous.py
 ~~~
 
+Для этого для системы Windows может понадобиться библиотека _pywin32-ctypes_
+~~~
+pip install pywin32-ctypes
+~~~
+
 Все необходимые пакеты указаны в *requirements_win.txt (Windows 10 x64) и requirements_linux.txt (Ubuntu 20.4)*
 
 ## Работа с интерфейсом

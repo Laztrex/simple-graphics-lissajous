@@ -1,3 +1,14 @@
+import os
+import sys
+
+application_path = os.path.dirname(os.path.realpath(__file__))
+
+# determine if application is a script file or frozen exe
+if getattr(sys, 'frozen', False):
+    application_path = os.path.dirname(os.path.realpath(sys.executable))
+elif __file__:
+    application_path = os.path.dirname(os.path.realpath(__file__))
+
 
 SETTINGS_MPL = \
     {
@@ -9,21 +20,21 @@ SETTINGS_MPL = \
         },
 
         "paths": {
-            "files": "files/presets/",
+            "files": f"{os.path.join(application_path, 'files', 'presets')}",
             "icon": {
-                "main": "files/icon.bmp",
-                "error": "files/error.bmp"
+                "main": f"{os.path.join(application_path, 'files', 'icon.bmp')}",
+                "error": f"{os.path.join(application_path, 'files', 'error.bmp')}"
             },
 
-            "ui": "main_window.ui"
+            "ui": f"{os.path.join(application_path, 'main_window.ui')}"
         },
 
         "dirs": {
             "images": [None, "Сохранение изображения",
-                       "files/pics",
+                       f"{os.path.join(application_path, 'files', 'pics')}",
                        "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) "],
             "settings": [None, "Сохранение настроек",
-                         "files/presets",
+                         f"{os.path.join(application_path, 'files', 'presets')}",
                          "JSON(*.json);;All Files(*.*) "],
         },
 
