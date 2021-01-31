@@ -49,7 +49,7 @@ class LissajousWindow(Qt.QMainWindow):
 
     """
     def __init__(self, *args, **kwargs):
-        super(LissajousWindow, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         try:
             from settings import SETTINGS_MPL
@@ -63,9 +63,9 @@ class LissajousWindow(Qt.QMainWindow):
         self.settings = SETTINGS_MPL
         check_paths()
 
-        self.generator = LissajousGenerator()
-
         self.init_ui()
+
+        self.generator = LissajousGenerator()
 
         self._fig = plt.Figure(figsize=(6, 5), dpi=100)
         self._ax = self._fig.add_subplot(1, 1, 1)
