@@ -87,7 +87,7 @@ main_lissajous.exe
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/main_2_strached-norm.jpg)
 
 Сохранить фигуру можно при нажатии кнопки _Сохранить фигуру в файл_,
- а сохранить текущие настройки можно по кнопке _Сохранить настройки_
+ а сохранить текущие настройки можно по кнопке _Сохранить настройки_.
 Откроется диалоговое окно, где необходимо написать имя файла и место сохранения. 
 По умолчанию директория для картинок - _\files\pics_, для настроек - _\files\presets_
 
@@ -100,6 +100,12 @@ main_lissajous.exe
 
 **Пример загрузки настроек**
 ![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/load_preset.jpg)
+
+
+**Результат загрузки настроек**
+![Image alt](https://github.com/Laztrex/simple-graphics-lissajous/raw/master/media/preset_to_load.jpg)
+
+Поля параметров изменились, была выведена соответствующая фигура.
 
 
 ## Перспектива
