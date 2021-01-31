@@ -67,7 +67,7 @@ class LissajousWindow(Qt.QMainWindow):
 
         self.init_ui()
 
-        self._fig = plt.Figure(figsize=(5, 4), dpi=100)
+        self._fig = plt.Figure(figsize=(6, 5), dpi=100)
         self._ax = self._fig.add_subplot(1, 1, 1)
 
         self._fc = FigureCanvas(self._fig)
