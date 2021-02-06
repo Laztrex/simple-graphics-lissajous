@@ -23,7 +23,6 @@ class LissajousGenerator:
         :param y: массив координат y
             :type y: numpy.ndarray
         """
-        time.sleep(0.5)
         self.x = x
         self.y = y
 

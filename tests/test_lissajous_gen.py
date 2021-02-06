@@ -4,8 +4,6 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets, QtTest
 
-from termcolor import cprint
-
 import unittest
 from unittest.mock import patch, call
 
@@ -20,10 +18,10 @@ class GlobalEngineTest(unittest.TestCase):
     def setUp(self):
         self.test_func = lissajousgen.LissajousGenerator()
         self.test_img = main_lissajous.LissajousWindow()
-        cprint(f'Вызван {self.shortDescription()}', flush=True, color='cyan')
+        print(f'Вызван {self.shortDescription()}', flush=True)
 
     def tearDown(self):
-        cprint(f'Оттестировано. \n', flush=True, color='grey')
+        print(f'Оттестировано. \n', flush=True)
 
     def test_gen_sequence(self):
         """Тест генерации последовательностей"""
@@ -34,13 +32,13 @@ class GlobalEngineTest(unittest.TestCase):
         values_1 = self.test_func.get_values()
         self.test_func.generate_figure(3, 2)
         values_2 = self.test_func.get_values()
-        self.assertEqual(np.all(values_1), np.all(values_2))
+        assert not np.allclose(values_1, values_2)
 
         self.test_func.generate_figure(2, 3)
         values_1 = self.test_func.get_values()
         self.test_func.generate_figure(2, 3)
         values_2 = self.test_func.get_values()
-        self.assertEqual(np.all(values_1), np.all(values_2))
+        assert np.allclose(values_1, values_2)
 
     @patch('lissajousgen.LissajousGenerator.get_values', return_value=(1, 1))
     @patch('lissajousgen.LissajousGenerator.generate_figure')
