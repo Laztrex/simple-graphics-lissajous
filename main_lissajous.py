@@ -125,7 +125,7 @@ class LissajousWindow(Qt.QMainWindow):
             "freq_y": float(self.freq_y_lineedit.text()),
             "phase": float(self.phase_lineedit.text()),
         } if params \
-            else {"color": self.settings["color_map"].get(self.color_combobox.currentText(), 'black'),
+            else {"color": self.settings["color_map"].get(self.color_combobox.currentText(), 'Синий'),
                   "linewidth": int(self.width_combobox.currentText())}
 
     def plot_lissajous_figure(self, settings=None):
@@ -193,7 +193,7 @@ class LissajousWindow(Qt.QMainWindow):
         """
         path_to_file = self.files_handler(mode='load')
         if path_to_file:
-            with open(path_to_file, 'r') as open_file:
+            with open(path_to_file, 'r', encoding='utf-8') as open_file:
                 loaded_settings = json.load(open_file)
             self.write_line_edit(loaded_settings)
 
@@ -203,9 +203,18 @@ class LissajousWindow(Qt.QMainWindow):
         :param data: словарь с ключами "freq_x", "freq_y", "phase"
             :type data: dict
         """
-        self.freq_x_lineedit.setText(str(int(data["freq_x"])))
-        self.freq_y_lineedit.setText(str(int(data["freq_y"])))
-        self.phase_lineedit.setText(str(int(data["phase"])))
+        self.freq_x_lineedit.setText(str(data.get("freq_x", '3')))
+        self.freq_y_lineedit.setText(str(data.get("freq_y", '2')))
+        self.phase_lineedit.setText(str(data.get("phase", '2')))
+
+        index = self.color_combobox.findText(data.get("color", 'Синий'), QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.color_combobox.setCurrentIndex(index)
+
+        index = self.width_combobox.findText(str(data.get("linewidth", '2')), QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.width_combobox.setCurrentIndex(index)
+
         self.plot_lissajous_figure()
 
     def proportion_ratio_click_handler(self):
@@ -233,6 +242,7 @@ class LissajousWindow(Qt.QMainWindow):
         path = self.files_handler(img=False)
         if path:
             d = self.get_settings(params=True)
+            d.update(self.get_settings(params=False))
             with open(path, 'w') as write_file:
                 json.dump(d, write_file, indent=2, ensure_ascii=False)
 
