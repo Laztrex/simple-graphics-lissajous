@@ -20,8 +20,8 @@ def validation_form(form):
     :param form: Экземпляр основного класса LissajousWindow
         :type form: LissajousWindow object
     """
-    reg_ex_lineedit = QtCore.QRegExp("^[1-9]{1,2}$.[1-9]{1,2}$")
-    reg_ex_phase = QtCore.QRegExp(r"^[1-9]{1,2}")
+    reg_ex_lineedit = QtCore.QRegExp("^[1-9]{1,2}[0]$.[1-9]{1,2}$")
+    reg_ex_phase = QtCore.QRegExp(r"^[1-9]{1,2}[0]")
 
     freq_x_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_x_lineedit)
     freq_y_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_y_lineedit)
