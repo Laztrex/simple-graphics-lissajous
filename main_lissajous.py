@@ -48,6 +48,7 @@ class LissajousWindow(Qt.QMainWindow):
     Проект будет дополняться в глубину (3D, анимации) и в ширину (новые параметры взаимодействия с интерфейсом)
 
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -203,9 +204,9 @@ class LissajousWindow(Qt.QMainWindow):
         :param data: словарь с ключами "freq_x", "freq_y", "phase"
             :type data: dict
         """
-        self.freq_x_lineedit.setText(str(data.get("freq_x", '3')))
-        self.freq_y_lineedit.setText(str(data.get("freq_y", '2')))
-        self.phase_lineedit.setText(str(data.get("phase", '2')))
+        self.freq_x_lineedit.setText(str(int(data.get("freq_x", '3'))))
+        self.freq_y_lineedit.setText(str(int(data.get("freq_y", '2'))))
+        self.phase_lineedit.setText(str(int(data.get("phase", '2'))))
 
         index = self.color_combobox.findText(data.get("color", 'Синий'), QtCore.Qt.MatchFixedString)
         if index >= 0:
