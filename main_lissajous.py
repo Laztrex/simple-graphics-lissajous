@@ -72,7 +72,7 @@ class LissajousWindow(Qt.QMainWindow):
         self._ax = self._fig.add_subplot(1, 1, 1)
 
         self._fc = FigureCanvas(self._fig)
-        layout = Qt.QVBoxLayout(self.graphicsView)
+        layout = Qt.QVBoxLayout(self.groupBox)
         layout.addWidget(self._fc)
 
         self.plot_lissajous_figure()
@@ -114,11 +114,12 @@ class LissajousWindow(Qt.QMainWindow):
             self._ax.grid(False)
         self.plot_lissajous_figure()
 
-    def get_settings(self, params=True):
+    def get_settings(self, params=True, dict_val=1):
         """
         Функция возвращает словарь параметров согласно флагу params
         :param params: Флаг категории параметров
             :type params: bool
+        :param dict_val: 1 - вернуть значение словаря из settings, 0 - вернуть значение combobox
         :return: dict, параметры фигуры, если params=True, иначе - параметры отображения
         """
         return {
@@ -126,7 +127,8 @@ class LissajousWindow(Qt.QMainWindow):
             "freq_y": float(self.freq_y_lineedit.text()),
             "phase": float(self.phase_lineedit.text()),
         } if params \
-            else {"color": self.settings["color_map"].get(self.color_combobox.currentText(), 'Синий'),
+            else {"color": [self.color_combobox.currentText(),
+                            self.settings["color_map"].get(self.color_combobox.currentText(), 'Синий')][dict_val],
                   "linewidth": int(self.width_combobox.currentText())}
 
     def plot_lissajous_figure(self, settings=None):
@@ -243,8 +245,8 @@ class LissajousWindow(Qt.QMainWindow):
         path = self.files_handler(img=False)
         if path:
             d = self.get_settings(params=True)
-            d.update(self.get_settings(params=False))
-            with open(path, 'w') as write_file:
+            d.update(self.get_settings(params=False, dict_val=0))
+            with open(path, 'w', encoding='utf-8') as write_file:
                 json.dump(d, write_file, indent=2, ensure_ascii=False)
 
 
