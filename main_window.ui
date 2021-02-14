@@ -92,6 +92,7 @@
       <property name="font">
        <font>
         <family>Verdana</family>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="autoFillBackground">
@@ -176,6 +177,7 @@
       <property name="font">
        <font>
         <family>Verdana</family>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="title">
@@ -202,6 +204,11 @@
        </property>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Частота X (a)</string>
          </property>
@@ -215,6 +222,11 @@
            <height>20</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>3</string>
          </property>
@@ -222,6 +234,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Частота Y (b)</string>
          </property>
@@ -234,6 +251,11 @@
            <width>77</width>
            <height>20</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>2</string>
@@ -258,6 +280,11 @@
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_7">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Фаза (δ)       π /</string>
          </property>
@@ -270,6 +297,11 @@
            <width>77</width>
            <height>20</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>2</string>
@@ -294,6 +326,11 @@
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Цвет линии</string>
          </property>
@@ -312,6 +349,11 @@
            <width>16777215</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <item>
           <property name="text">
@@ -337,6 +379,11 @@
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Толщина линии</string>
          </property>
@@ -349,6 +396,11 @@
            <width>77</width>
            <height>20</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <item>
           <property name="text">
@@ -396,6 +448,11 @@
            <height>20</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Выровнять</string>
          </property>
@@ -408,6 +465,11 @@
            <width>77</width>
            <height>20</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
@@ -443,6 +505,11 @@
            <width>177</width>
            <height>23</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
@@ -481,6 +548,11 @@
            <height>23</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Сохранить фигуру в файл</string>
          </property>
@@ -510,6 +582,11 @@
            <height>23</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Сохранить настройки</string>
          </property>
@@ -522,6 +599,11 @@
            <width>177</width>
            <height>23</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>Загрузить настройки</string>
