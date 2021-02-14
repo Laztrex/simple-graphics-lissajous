@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>720</width>
-    <height>440</height>
+    <height>419</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,12 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>720</width>
+    <height>419</height>
+   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -203,6 +209,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QLineEdit" name="freq_x_lineedit">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="text">
           <string>3</string>
          </property>
@@ -217,6 +229,12 @@
        </item>
        <item row="1" column="1">
         <widget class="QLineEdit" name="freq_y_lineedit">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="text">
           <string>2</string>
          </property>
@@ -247,6 +265,12 @@
        </item>
        <item row="3" column="1">
         <widget class="QLineEdit" name="phase_lineedit">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="text">
           <string>2</string>
          </property>
@@ -279,8 +303,8 @@
         <widget class="QComboBox" name="color_combobox">
          <property name="minimumSize">
           <size>
-           <width>0</width>
-           <height>0</height>
+           <width>77</width>
+           <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -320,6 +344,12 @@
        </item>
        <item row="6" column="1">
         <widget class="QComboBox" name="width_combobox">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>20</height>
+          </size>
+         </property>
          <item>
           <property name="text">
            <string>1</string>
@@ -360,6 +390,12 @@
        </item>
        <item row="8" column="0">
         <widget class="QPushButton" name="proportion_button">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="text">
           <string>Выровнять</string>
          </property>
@@ -367,6 +403,12 @@
        </item>
        <item row="8" column="1">
         <widget class="QRadioButton" name="radio_grid">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>20</height>
+          </size>
+         </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
@@ -396,6 +438,12 @@
        </item>
        <item row="10" column="0" colspan="2">
         <widget class="QPushButton" name="plot_button">
+         <property name="minimumSize">
+          <size>
+           <width>177</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
@@ -427,6 +475,12 @@
        </item>
        <item row="11" column="0" colspan="2">
         <widget class="QPushButton" name="save_button">
+         <property name="minimumSize">
+          <size>
+           <width>177</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>Сохранить фигуру в файл</string>
          </property>
@@ -450,6 +504,12 @@
        </item>
        <item row="13" column="0" colspan="2">
         <widget class="QPushButton" name="save_json_button">
+         <property name="minimumSize">
+          <size>
+           <width>177</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>Сохранить настройки</string>
          </property>
@@ -457,6 +517,12 @@
        </item>
        <item row="14" column="0" colspan="2">
         <widget class="QPushButton" name="load_json_button">
+         <property name="minimumSize">
+          <size>
+           <width>177</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>Загрузить настройки</string>
          </property>
