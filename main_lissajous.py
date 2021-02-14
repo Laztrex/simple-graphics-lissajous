@@ -72,7 +72,7 @@ class LissajousWindow(Qt.QMainWindow):
         self._ax = self._fig.add_subplot(1, 1, 1)
 
         self._fc = FigureCanvas(self._fig)
-        layout = Qt.QVBoxLayout(self.groupBox)
+        layout = Qt.QVBoxLayout(self.graphicsView)
         layout.addWidget(self._fc)
 
         self.plot_lissajous_figure()

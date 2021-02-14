@@ -22,8 +22,7 @@ SETTINGS_MPL = \
         "paths": {
             "files": f"{os.path.join(application_path, 'files', 'presets')}",
             "icon": {
-                "main": f"{os.path.join(application_path, 'files', 'icon.bmp')}",
-                "error": f"{os.path.join(application_path, 'files', 'error.bmp')}"
+                "main": f"{os.path.join(application_path, 'files', 'icon.ico')}",
             },
 
             "ui": f"{os.path.join(application_path, 'main_window.ui')}"
