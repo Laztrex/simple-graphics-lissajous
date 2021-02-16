@@ -36,6 +36,10 @@ def validation_form(form):
     form.phase_lineedit.setValidator(phase_validator)
 
 
+def fun(x, y):
+    return x**2 + y
+
+
 def check_paths():
     """
     Проверка рекомендуемо-необходимых директорий
@@ -46,28 +50,21 @@ def check_paths():
 
 class MplCanvas(FigureCanvas):
 
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, canvas_fig=None, mode=None, width=5, height=4, dpi=100):
         fig = plt.Figure(figsize=(width, height), dpi=dpi)
         super(MplCanvas, self).__init__(fig)
-        # if parent and hasattr(parent, '_fig'):
-        if parent:
-            if parent.checkBox_3D.isChecked():
-                parent._fig.figure.clf()
-                parent._fig.axes = parent._fig.figure.add_subplot(111, projection='3d')
-                parent._fig.axes.get_proj = lambda: np.dot(Axes3D.get_proj(parent._fig.axes),
-                                                           np.diag([1.3, 1.3, 1.3, 1]))
-            else:
-                parent._fig.figure.clf()
-                parent._fig.axes = parent._fig.figure.add_subplot(111)
-
+        if canvas_fig:
+            canvas_fig.figure.clf()
+            canvas_fig.axes = canvas_fig.figure.add_subplot(111, projection=mode)
+            if mode is not None:
+                canvas_fig.axes.get_proj = lambda: np.dot(Axes3D.get_proj(canvas_fig.axes),
+                                                          np.diag([1.2, 1.2, 1.2, 1]))
+            self.axes = canvas_fig.axes
         else:
             self.axes = fig.add_subplot(111)
-            return
 
-        if isinstance(parent._fig.axes, Axes3D):
-            parent._fig.axes.mouse_init()
-
-        self.axes = parent._fig.axes
+        if canvas_fig and isinstance(canvas_fig.axes, Axes3D):
+            canvas_fig.axes.mouse_init()
 
 
 class LissajousWindow(Qt.QMainWindow):
@@ -120,13 +117,17 @@ class LissajousWindow(Qt.QMainWindow):
         self.plot_button.clicked.connect(self.plot_button_click_handler)
         self.save_button.clicked.connect(self.save_image_button_handler)
         self.proportion_button.clicked.connect(self.proportion_ratio_click_handler)
-        self.radio_grid.clicked.connect(self.plot_radio_grid_handler)
+        self.radio_grid.clicked.connect(self.plot_lissajous_figure)
         self.checkBox_3D.clicked.connect(self.update_plt)
         self.save_json_button.clicked.connect(self.save_json_button_handler)
         self.load_json_button.clicked.connect(self.load_file_handler)
 
     def update_plt(self):
-        MplCanvas(self)
+        if self.checkBox_3D.isChecked():
+            MplCanvas(self._fig, mode='3d')
+        else:
+            MplCanvas(self._fig)
+
         self.plot_lissajous_figure()
 
     def plot_button_click_handler(self):
@@ -134,19 +135,19 @@ class LissajousWindow(Qt.QMainWindow):
         Функция обработки нажатия кнопки «Обновить фигуру».
         Запускает процесс генерации фигуры после валидации входных данных
         """
+
         validation_form(self)
         settings = self.get_settings()
         self.plot_lissajous_figure(settings)
 
-    def plot_radio_grid_handler(self):
+    def plot_radio_grid_func(self):
         """
-        Функция обработки нажатия свитча «Сетка». Включает в отображение сетку и нумерацию осей
+        Функция проверки свитча «Сетка». Включает в отображение сетку и нумерацию осей
         """
         if self.radio_grid.isChecked():
-            self._fig.axes.grid()
+            self._fig.axes.grid(b=True, color='b', linestyle='-')
         else:
-            self._fig.axes.grid()
-        self.plot_lissajous_figure()
+            self._fig.axes.grid(b=False)
 
     def get_settings(self, params=True, dict_val=1):
         """
@@ -156,6 +157,7 @@ class LissajousWindow(Qt.QMainWindow):
         :param dict_val: 1 - вернуть значение словаря из settings, 0 - вернуть значение combobox
         :return: dict, параметры фигуры, если params=True, иначе - параметры отображения
         """
+
         return {
             "freq_x": float(self.freq_x_lineedit.text()),
             "freq_y": float(self.freq_y_lineedit.text()),
@@ -171,7 +173,8 @@ class LissajousWindow(Qt.QMainWindow):
         :param settings: словарь с параметрами фигуры
             :type settings: dict
         """
-        if settings is None:
+
+        if not isinstance(settings, dict):
             settings = self.get_settings()
 
         self._fig.axes.lines.clear()
@@ -185,9 +188,10 @@ class LissajousWindow(Qt.QMainWindow):
         self._fig.axes.plot(*values,
                             **self.get_settings(params=False))
 
+        self.plot_radio_grid_func()
         self.check_grid_is_checked(*values)
 
-        plt.tight_layout()
+        self._fig.axes.figure.tight_layout()
 
         self._fig.draw()
 
@@ -201,9 +205,12 @@ class LissajousWindow(Qt.QMainWindow):
         """
         if self.radio_grid.isChecked():
             self._fig.axes.axis("on")
+            # self._fig.axes.set_xlabel('X Label')
+            # self._fig.axes.set_ylabel('Y Label')
             self._fig.axes.set_xlim(min(x), max(x))
             self._fig.axes.set_ylim(min(y), max(y))
             if z is not None:
+                # self._fig.axes.set_zlabel('Z Label')
                 self._fig.axes.set_zlim(min(z), max(z))
         else:
             self._fig.axes.axis("off")
