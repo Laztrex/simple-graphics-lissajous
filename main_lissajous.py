@@ -36,10 +36,6 @@ def validation_form(form):
     form.phase_lineedit.setValidator(phase_validator)
 
 
-def fun(x, y):
-    return x**2 + y
-
-
 def check_paths():
     """
     Проверка рекомендуемо-необходимых директорий
