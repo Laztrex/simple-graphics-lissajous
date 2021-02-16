@@ -4,8 +4,12 @@ import json
 import os
 import sys
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import numpy as np
+
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, \
+    NavigationToolbar2QT as NavigationToolbar
+from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 import PyQt5.QtWidgets as Qt
 from PyQt5 import uic, QtGui, QtCore
@@ -40,6 +44,32 @@ def check_paths():
     os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/presets'), exist_ok=True)
 
 
+class MplCanvas(FigureCanvas):
+
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = plt.Figure(figsize=(width, height), dpi=dpi)
+        super(MplCanvas, self).__init__(fig)
+        # if parent and hasattr(parent, '_fig'):
+        if parent:
+            if parent.checkBox_3D.isChecked():
+                parent._fig.figure.clf()
+                parent._fig.axes = parent._fig.figure.add_subplot(111, projection='3d')
+                parent._fig.axes.get_proj = lambda: np.dot(Axes3D.get_proj(parent._fig.axes),
+                                                           np.diag([1.3, 1.3, 1.3, 1]))
+            else:
+                parent._fig.figure.clf()
+                parent._fig.axes = parent._fig.figure.add_subplot(111)
+
+        else:
+            self.axes = fig.add_subplot(111)
+            return
+
+        if isinstance(parent._fig.axes, Axes3D):
+            parent._fig.axes.mouse_init()
+
+        self.axes = parent._fig.axes
+
+
 class LissajousWindow(Qt.QMainWindow):
     """
     Python 3.7.5
@@ -66,14 +96,13 @@ class LissajousWindow(Qt.QMainWindow):
 
         self.init_ui()
 
-        self.generator = LissajousGenerator()
+        self._fig = MplCanvas()
 
-        self._fig = plt.Figure(figsize=(6, 5), dpi=100)
-        self._ax = self._fig.add_subplot(1, 1, 1)
-
-        self._fc = FigureCanvas(self._fig)
+        # toolbar = NavigationToolbar(self._fig, self)
         layout = Qt.QVBoxLayout(self.groupBox)
-        layout.addWidget(self._fc)
+        # layout.addWidget(toolbar)
+        layout.addWidget(self._fig)
+        self.generator = LissajousGenerator()
 
         self.plot_lissajous_figure()
 
@@ -92,8 +121,13 @@ class LissajousWindow(Qt.QMainWindow):
         self.save_button.clicked.connect(self.save_image_button_handler)
         self.proportion_button.clicked.connect(self.proportion_ratio_click_handler)
         self.radio_grid.clicked.connect(self.plot_radio_grid_handler)
+        self.checkBox_3D.clicked.connect(self.update_plt)
         self.save_json_button.clicked.connect(self.save_json_button_handler)
         self.load_json_button.clicked.connect(self.load_file_handler)
+
+    def update_plt(self):
+        MplCanvas(self)
+        self.plot_lissajous_figure()
 
     def plot_button_click_handler(self):
         """
@@ -109,9 +143,9 @@ class LissajousWindow(Qt.QMainWindow):
         Функция обработки нажатия свитча «Сетка». Включает в отображение сетку и нумерацию осей
         """
         if self.radio_grid.isChecked():
-            self._ax.grid(True)
+            self._fig.axes.grid()
         else:
-            self._ax.grid(False)
+            self._fig.axes.grid()
         self.plot_lissajous_figure()
 
     def get_settings(self, params=True, dict_val=1):
@@ -140,21 +174,24 @@ class LissajousWindow(Qt.QMainWindow):
         if settings is None:
             settings = self.get_settings()
 
-        for line in self._ax.lines:
-            line.remove()
+        self._fig.axes.lines.clear()
 
-        self.generator.generate_figure(**settings)
-        x_arr, y_arr = self.generator.get_values()
-        self._ax.plot(x_arr, y_arr,
-                      **self.get_settings(params=False))
+        if self.checkBox_3D.isChecked():
+            self.generator.generate_figure(**settings, mode='3d')
+        else:
+            self.generator.generate_figure(**settings)
 
-        self.check_grid_is_checked(x_arr, y_arr)
+        values = self.generator.get_values()
+        self._fig.axes.plot(*values,
+                            **self.get_settings(params=False))
+
+        self.check_grid_is_checked(*values)
 
         plt.tight_layout()
 
-        self._fc.draw()
+        self._fig.draw()
 
-    def check_grid_is_checked(self, x, y):
+    def check_grid_is_checked(self, x, y, z=None):
         """
         Проверка флага включения сетки на графике
         :param x: Массив координат
@@ -163,11 +200,13 @@ class LissajousWindow(Qt.QMainWindow):
             :type y: numpy.ndarray
         """
         if self.radio_grid.isChecked():
-            self._ax.axis("on")
-            self._ax.set_xlim(min(x), max(x))
-            self._ax.set_ylim(min(y), max(y))
+            self._fig.axes.axis("on")
+            self._fig.axes.set_xlim(min(x), max(x))
+            self._fig.axes.set_ylim(min(y), max(y))
+            if z is not None:
+                self._fig.axes.set_zlim(min(z), max(z))
         else:
-            self._ax.axis("off")
+            self._fig.axes.axis("off")
 
     def files_handler(self, mode='save', img=True):
         """
