@@ -1,12 +1,11 @@
 import os
 import sys
 
-application_path = os.path.dirname(os.path.realpath(__file__))
 
 # determine if application is a script file or frozen exe
-if getattr(sys, 'frozen', False):
+if getattr(sys, 'frozen', False) and not __file__.endswith('.exe'):
     application_path = os.path.dirname(os.path.realpath(sys.executable))
-elif __file__:
+else:
     application_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -37,9 +36,7 @@ SETTINGS_MPL = \
                          "JSON(*.json);;All Files(*.*) "],
         },
 
-
         "message": "Генератор фигур Лиссажу. Версия {}. CC BY-SA 4.0 Lazarev",
-
 
         "version": "0.1"
     }

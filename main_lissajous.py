@@ -6,6 +6,10 @@ import sys
 
 import numpy as np
 
+import matplotlib
+
+matplotlib.use('Qt5Agg')
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, \
     NavigationToolbar2QT as NavigationToolbar
@@ -40,8 +44,8 @@ def check_paths():
     """
     Проверка рекомендуемо-необходимых директорий
     """
-    os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/pics'), exist_ok=True)
-    os.makedirs(os.path.normpath(os.path.dirname(__file__) + '/files/presets'), exist_ok=True)
+    os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'pics'), exist_ok=True)
+    os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'presets'), exist_ok=True)
 
 
 class MplCanvas(FigureCanvas):
