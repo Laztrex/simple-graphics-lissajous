@@ -6,11 +6,8 @@ import sys
 
 import numpy as np
 
-import matplotlib
-
-matplotlib.use('Qt5Agg')
-
 import matplotlib.pyplot as plt
+from matplotlib import rcParams
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, \
     NavigationToolbar2QT as NavigationToolbar
 from mpl_toolkits.mplot3d.axes3d import Axes3D
@@ -28,6 +25,7 @@ def validation_form(form):
     :param form: Экземпляр основного класса LissajousWindow
         :type form: LissajousWindow object
     """
+
     reg_ex_lineedit = QtCore.QRegExp("^[1-9]{1,2}[0]$.[1-9]{1,2}$")
     reg_ex_phase = QtCore.QRegExp(r"^[1-9]{1,2}[0]")
 
@@ -44,6 +42,7 @@ def check_paths():
     """
     Проверка рекомендуемо-необходимых директорий
     """
+
     os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'pics'), exist_ok=True)
     os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'presets'), exist_ok=True)
 
@@ -51,20 +50,17 @@ def check_paths():
 class MplCanvas(FigureCanvas):
 
     def __init__(self, canvas_fig=None, mode=None, width=5, height=4, dpi=100):
-        fig = plt.Figure(figsize=(width, height), dpi=dpi)
+        fig = plt.Figure(figsize=(width, height), dpi=dpi, frameon=True)
         super(MplCanvas, self).__init__(fig)
         if canvas_fig:
             canvas_fig.figure.clf()
             canvas_fig.axes = canvas_fig.figure.add_subplot(111, projection=mode)
             if mode is not None:
                 canvas_fig.axes.get_proj = lambda: np.dot(Axes3D.get_proj(canvas_fig.axes),
-                                                          np.diag([1.2, 1.2, 1.2, 1]))
-            self.axes = canvas_fig.axes
+                                                          np.diag([1, 1.3, 1.3, 1]))
+            self.axes = canvas_fig.axes.figure.get_axes()
         else:
             self.axes = fig.add_subplot(111)
-
-        if canvas_fig and isinstance(canvas_fig.axes, Axes3D):
-            canvas_fig.axes.mouse_init()
 
 
 class LissajousWindow(Qt.QMainWindow):
@@ -104,6 +100,10 @@ class LissajousWindow(Qt.QMainWindow):
         self.plot_lissajous_figure()
 
     def init_ui(self):
+        """
+        Инициализация qt-формы
+        """
+
         self.setStyleSheet("QLineEdit { border: 1px solid; border-color:#dcdcdc; border-radius: 4px;} "
                            "QLineEdit:focus{border:1px solid gray; }")
 
@@ -123,7 +123,16 @@ class LissajousWindow(Qt.QMainWindow):
         self.load_json_button.clicked.connect(self.load_file_handler)
 
     def update_plt(self):
+        """
+        Обновление фигуры. Используется при переключении 2D <-> 3D
+        """
+
         if self.checkBox_3D.isChecked():
+            # rcParams['xtick.color'] = 'red'
+            # rcParams['ytick.color'] = 'red'
+            # rcParams['axes.labelcolor'] = 'red'
+            # rcParams['axes.edgecolor'] = 'red'
+
             MplCanvas(self._fig, mode='3d')
         else:
             MplCanvas(self._fig)
@@ -144,10 +153,29 @@ class LissajousWindow(Qt.QMainWindow):
         """
         Функция проверки свитча «Сетка». Включает в отображение сетку и нумерацию осей
         """
+
         if self.radio_grid.isChecked():
-            self._fig.axes.grid(b=True, color='b', linestyle='-')
+            self._fig.axes.grid(b=True, linestyle=':', linewidth=1)
         else:
             self._fig.axes.grid(b=False)
+
+        self.check_axes()
+
+    def check_axes(self):
+        """
+        Проверка флага включения сетки на графике и установка осей
+        """
+
+        if self.radio_grid.isChecked():
+            self._fig.axes.axis("on")
+            self._fig.axes.set_xlabel('X', fontsize=10, color='black')
+            self._fig.axes.set_ylabel('Y', fontsize=10, color='black')
+            if isinstance(self._fig.axes, Axes3D):
+                self._fig.axes.set_zlabel('Z', fontsize=10, color='black')
+        else:
+            self._fig.axes.axis("off")
+
+        self._fig.axes.tick_params(axis='both', length=5, labelsize=8)
 
     def get_settings(self, params=True, dict_val=1):
         """
@@ -189,31 +217,10 @@ class LissajousWindow(Qt.QMainWindow):
                             **self.get_settings(params=False))
 
         self.plot_radio_grid_func()
-        self.check_grid_is_checked(*values)
 
         self._fig.axes.figure.tight_layout()
 
         self._fig.draw()
-
-    def check_grid_is_checked(self, x, y, z=None):
-        """
-        Проверка флага включения сетки на графике
-        :param x: Массив координат
-            :type x: numpy.ndarray
-        :param y: Массив координат
-            :type y: numpy.ndarray
-        """
-        if self.radio_grid.isChecked():
-            self._fig.axes.axis("on")
-            # self._fig.axes.set_xlabel('X Label')
-            # self._fig.axes.set_ylabel('Y Label')
-            self._fig.axes.set_xlim(min(x), max(x))
-            self._fig.axes.set_ylim(min(y), max(y))
-            if z is not None:
-                # self._fig.axes.set_zlabel('Z Label')
-                self._fig.axes.set_zlim(min(z), max(z))
-        else:
-            self._fig.axes.axis("off")
 
     def files_handler(self, mode='save', img=True):
         """
@@ -225,6 +232,7 @@ class LissajousWindow(Qt.QMainWindow):
         :return: Если путь не найден - None
                  Иначе - директория файла
         """
+
         if mode == 'save':
             file_path, _ = Qt.QFileDialog.getSaveFileName(*self.settings["dirs"][["settings", "images"][img]])
         else:
@@ -240,6 +248,7 @@ class LissajousWindow(Qt.QMainWindow):
         Функция обработки нажатия кнопки «Загрузить настройки»
         По умолчанию директория указана в settings.py (settings_mpl["paths"]["files"])
         """
+
         path_to_file = self.files_handler(mode='load')
         if path_to_file:
             with open(path_to_file, 'r', encoding='utf-8') as open_file:
@@ -252,6 +261,7 @@ class LissajousWindow(Qt.QMainWindow):
         :param data: словарь с ключами "freq_x", "freq_y", "phase"
             :type data: dict
         """
+
         self.freq_x_lineedit.setText(str(int(data.get("freq_x", '3'))))
         self.freq_y_lineedit.setText(str(int(data.get("freq_y", '2'))))
         self.phase_lineedit.setText(str(int(data.get("phase", '2'))))
@@ -271,6 +281,7 @@ class LissajousWindow(Qt.QMainWindow):
         Функция обработки нажатия кнопки «Выровнять»
         Выравнивание соотношения сторон 4к3
         """
+
         h = min(self.height(), self.width())
         self.resize(h + 280, h)
 
@@ -279,6 +290,7 @@ class LissajousWindow(Qt.QMainWindow):
         Функция обработки нажатия кнопки «Сохранить фигуру в файл»
         Путь к файлу указан в settings.py (settings_mpl["dirs"]["images"])
         """
+
         path = self.files_handler()
         if path:
             self._fig.savefig(path)
@@ -288,6 +300,7 @@ class LissajousWindow(Qt.QMainWindow):
         Функция обработки нажатия кнопки «Сохранить настройки»
         Путь к файлу указан в settings.py (settings_mpl["dirs"]["settings"])
         """
+
         path = self.files_handler(img=False)
         if path:
             d = self.get_settings(params=True)

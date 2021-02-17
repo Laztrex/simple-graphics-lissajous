@@ -63,7 +63,6 @@ class LissajousGenerator:
         dimension = {'2d': np.linspace(0, 2 * np.pi, self._resolution),
                      '3d': np.linspace(-6 * np.pi, 6 * np.pi, self._resolution)}
         phi = np.pi / phase
-        # t = np.linspace(0, 2 * np.pi, self._resolution)
         t = dimension.get(mode, '2d')
         x = a * np.sin(freq_x * t + phi)
         y = b * np.sin(freq_y * t)
