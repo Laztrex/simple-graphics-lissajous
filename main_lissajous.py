@@ -57,7 +57,8 @@ class MplCanvas(FigureCanvas):
             canvas_fig.axes = canvas_fig.figure.add_subplot(111, projection=mode)
             if mode is not None:
                 canvas_fig.axes.get_proj = lambda: np.dot(Axes3D.get_proj(canvas_fig.axes),
-                                                          np.diag([1, 1.3, 1.3, 1]))
+                                                          np.diag([1.2, 1.5, 1.5, 1]))
+                canvas_fig.axes.view_init(elev=90., azim=0)
             self.axes = canvas_fig.axes.figure.get_axes()
         else:
             self.axes = fig.add_subplot(111)

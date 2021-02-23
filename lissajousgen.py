@@ -66,5 +66,7 @@ class LissajousGenerator:
         t = dimension.get(mode, '2d')
         x = a * np.sin(freq_x * t + phi)
         y = b * np.sin(freq_y * t)
+        z = np.sin(1 * t)
+        # z = t
 
-        self.update_values(x, y, [None, t][mode == '3d'])
+        self.update_values(x, y, [None, z][mode == '3d'])
