@@ -45,7 +45,7 @@ class LissajousGenerator:
 
         self._resolution = resolution
 
-    def generate_figure(self, freq_x, freq_y, freq_z=1, phase=None, a=1, b=1, c=1,
+    def generate_figure(self, freq_x, freq_y, freq_z=1, phase='1.5708', a=1, b=1, c=1,
                         length=10, mode='2d'):
         """
         Функция генерирует фигуру (массивы x и y координат точек) с заданными частотами.
@@ -53,12 +53,20 @@ class LissajousGenerator:
             :type freq_x: float
         :param freq_y: Частота массива y
             :type freq_y: float
-        :param phase: Сдвиг фаз
-            :type phase: str
+        :param freq_z: Частота массива z
+            :type freq_y: float
+        :param phase: Сдвиг фаз. Формат x.xx для X, Y, Z. (ph_x, [ph_y, [ph_z]])
+            :type phase: str (to float)
         :param a: Амплитуда колебания x
             :type a: int
         :param b: Амплитуда колебания y
             :type b: int
+        :param c: Амплитуда колебания z
+            :type b: int
+        :param length: Длина отрисовки фигуры
+            :type b: int
+        :param mode: Режим - 2D/3D
+            :type b: str
         """
 
         dimension = {'2d': np.linspace(-length * np.pi, length * np.pi, self._resolution),

@@ -52,7 +52,7 @@ class GlobalEngineTest(unittest.TestCase):
         self.test_img.width_combobox.setCurrentIndex(2)
 
         QtTest.QTest.mouseClick(self.test_img.plot_button, QtCore.Qt.LeftButton)
-        mock_gen.assert_has_calls([call(freq_x=3.0, freq_y=2.0, phase=1.0)])
+        mock_gen.assert_has_calls([call(freq_x=3.0, freq_y=2.0, freq_z=0.0, phase='1', length=10)])
 
         mock_plt.assert_has_calls([call(1, 1, color='crimson', linewidth=3)])
 

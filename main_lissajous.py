@@ -274,18 +274,6 @@ class LissajousWindow(Qt.QMainWindow):
 
         return file_path
 
-    def load_file_handler(self):
-        """
-        Функция обработки нажатия кнопки «Загрузить настройки»
-        По умолчанию директория указана в settings.py (settings_mpl["paths"]["files"])
-        """
-
-        path_to_file = self.files_handler(mode='load')
-        if path_to_file:
-            with open(path_to_file, 'r', encoding='utf-8') as open_file:
-                loaded_settings = json.load(open_file)
-            self.write_line_edit(loaded_settings)
-
     def write_line_edit(self, data):
         """
         Функция записи настроек с загруженного файла. На стеке - над «load_file_handler»
@@ -293,9 +281,10 @@ class LissajousWindow(Qt.QMainWindow):
             :type data: dict
         """
 
-        self.freq_x_lineedit.setText(str(int(data.get("freq_x", '3'))))
-        self.freq_y_lineedit.setText(str(int(data.get("freq_y", '2'))))
-        self.phase_lineedit.setText(str(int(data.get("phase", '2'))))
+        self.freq_x_lineedit.setText(str(float(data.get("freq_x", '3'))))
+        self.freq_y_lineedit.setText(str(float(data.get("freq_y", '2'))))
+        self.freq_z_lineedit.setText(str(float(data.get("freq_z", '0'))))
+        self.phase_lineedit.setText(str(float(data.get("phase", '2'))))
 
         index = self.color_combobox.findText(data.get("color", 'Синий'), QtCore.Qt.MatchFixedString)
         if index >= 0:
@@ -305,7 +294,12 @@ class LissajousWindow(Qt.QMainWindow):
         if index >= 0:
             self.width_combobox.setCurrentIndex(index)
 
-        self.plot_lissajous_figure()
+        self.lengthSlider.setValue(data.get("length", '10'))
+
+        check_dimension = data.get("3D", False)
+        self.checkBox_3D.setChecked(check_dimension)
+
+        self.update_plt()
 
     def proportion_ratio_click_handler(self):
         """
@@ -326,6 +320,18 @@ class LissajousWindow(Qt.QMainWindow):
         if path:
             self._fig.print_figure(path)
 
+    def load_file_handler(self):
+        """
+        Функция обработки нажатия кнопки «Загрузить настройки»
+        По умолчанию директория указана в settings.py (settings_mpl["paths"]["files"])
+        """
+
+        path_to_file = self.files_handler(mode='load')
+        if path_to_file:
+            with open(path_to_file, 'r', encoding='utf-8') as open_file:
+                loaded_settings = json.load(open_file)
+            self.write_line_edit(loaded_settings)
+
     def save_json_button_handler(self):
         """
         Функция обработки нажатия кнопки «Сохранить настройки»
@@ -336,6 +342,7 @@ class LissajousWindow(Qt.QMainWindow):
         if path:
             d = self.get_settings(params=True)
             d.update(self.get_settings(params=False, dict_val=0))
+            d.update({"3D": self.checkBox_3D.isChecked()})
             with open(path, 'w', encoding='utf-8') as write_file:
                 json.dump(d, write_file, indent=2, ensure_ascii=False)
 
