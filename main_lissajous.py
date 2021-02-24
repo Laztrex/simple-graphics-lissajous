@@ -26,7 +26,7 @@ def validation_form(form):
         :type form: LissajousWindow object
     """
 
-    reg_ex_lineedit = QtCore.QRegExp("^[1-9]{1,2}[0]$.[1-9]{1,2}$")
+    reg_ex_lineedit = QtCore.QRegExp("^[1-9]{1,2}[0]*[.][1-9]{1,2}$")
     reg_ex_phase = QtCore.QRegExp(r"^[1-9]{1,2}[0]")
 
     freq_x_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_x_lineedit)
@@ -49,16 +49,16 @@ def check_paths():
 
 class MplCanvas(FigureCanvas):
 
-    def __init__(self, canvas_fig=None, mode=None, width=5, height=4, dpi=100):
-        fig = plt.Figure(figsize=(width, height), dpi=dpi, frameon=True)
+    def __init__(self, canvas_fig=None, mode=None, width=5, height=4):
+        fig = plt.Figure(figsize=(width, height), frameon=True)
         super(MplCanvas, self).__init__(fig)
         if canvas_fig:
             canvas_fig.figure.clf()
             canvas_fig.axes = canvas_fig.figure.add_subplot(111, projection=mode)
             if mode is not None:
                 canvas_fig.axes.get_proj = lambda: np.dot(Axes3D.get_proj(canvas_fig.axes),
-                                                          np.diag([1.2, 1.5, 1.5, 1]))
-                canvas_fig.axes.view_init(elev=90., azim=0)
+                                                          np.diag([1.5, 1.2, 1.2, 1]))
+                canvas_fig.axes.view_init(elev=90., azim=-90)
             self.axes = canvas_fig.axes.figure.get_axes()
         else:
             self.axes = fig.add_subplot(111)
@@ -92,11 +92,12 @@ class LissajousWindow(Qt.QMainWindow):
 
         self._fig = MplCanvas()
 
-        # toolbar = NavigationToolbar(self._fig, self)
-        layout = Qt.QVBoxLayout(self.groupBox)
-        # layout.addWidget(toolbar)
-        layout.addWidget(self._fig)
         self.generator = LissajousGenerator()
+
+        layout = Qt.QVBoxLayout(self.groupBox)
+        layout.addWidget(self._fig)
+        # toolbar = NavigationToolbar(self._fig, self)
+        # layout.addWidget(toolbar)
 
         self.plot_lissajous_figure()
 
@@ -122,11 +123,22 @@ class LissajousWindow(Qt.QMainWindow):
         self.checkBox_3D.clicked.connect(self.update_plt)
         self.save_json_button.clicked.connect(self.save_json_button_handler)
         self.load_json_button.clicked.connect(self.load_file_handler)
+        self.lengthSlider.valueChanged.connect(self.length_change_handler)
+
+    # def clearLayout(self, layout):
+    #     while layout.count():
+    #         child = layout.takeAt(0)
+    #         if child.widget() is not None:
+    #             child.widget().deleteLater()
+    #         elif child.layout() is not None:
+    #             self.clearLayout(child.layout())
 
     def update_plt(self):
         """
-        Обновление фигуры. Используется при переключении 2D <-> 3D
+        Обновление фигуры. Используется при первом старте и переключении 2D <-> 3D
         """
+        # if self.groupBox.layout():
+        #     self.clearLayout(self.groupBox.layout())
 
         if self.checkBox_3D.isChecked():
             # rcParams['xtick.color'] = 'red'
@@ -149,6 +161,13 @@ class LissajousWindow(Qt.QMainWindow):
         validation_form(self)
         settings = self.get_settings()
         self.plot_lissajous_figure(settings)
+
+    def length_change_handler(self):
+        """
+        Функция обработки изменения длины фигуры
+        """
+
+        self.length_label.setText(str(self.lengthSlider.value()))
 
     def plot_radio_grid_func(self):
         """
@@ -191,6 +210,7 @@ class LissajousWindow(Qt.QMainWindow):
             "freq_x": float(self.freq_x_lineedit.text()),
             "freq_y": float(self.freq_y_lineedit.text()),
             "phase": float(self.phase_lineedit.text()),
+            "length": int(self.lengthSlider.value())
         } if params \
             else {"color": [self.color_combobox.currentText(),
                             self.settings["color_map"].get(self.color_combobox.currentText(), 'Синий')][dict_val],
@@ -294,7 +314,7 @@ class LissajousWindow(Qt.QMainWindow):
 
         path = self.files_handler()
         if path:
-            self._fig.savefig(path)
+            self._fig.print_figure(path)
 
     def save_json_button_handler(self):
         """
