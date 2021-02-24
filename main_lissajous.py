@@ -26,8 +26,10 @@ def validation_form(form):
         :type form: LissajousWindow object
     """
 
-    reg_ex_lineedit = QtCore.QRegExp("^[1-9]{1,2}[0]*[.][1-9]{1,2}$")
-    reg_ex_phase = QtCore.QRegExp(r"^[1-9]{1,2}[0]")
+    reg_ex_lineedit = QtCore.QRegExp("^([0-9]{1,2})[.]([0-9]{1,5})?$")
+    reg_ex_phase = QtCore.QRegExp(r"^([0-9]{1,2})[.]([0-9]{1,5})\s?"
+                                  r"([0-9]{1,2})[.]([0-9]{1,5})\s?"
+                                  r"([0-9]{1,2})[.]([0-9]{1,5})?$")
 
     freq_x_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_x_lineedit)
     freq_y_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_y_lineedit)
@@ -112,6 +114,9 @@ class LissajousWindow(Qt.QMainWindow):
         uic.loadUi(self.settings["paths"]["ui"], self)
         validation_form(self)
 
+        self.freq_z_lineedit.setVisible(False)
+        self.label_5.setVisible(False)
+
         self.setWindowTitle(self.settings["message"].format(self.settings["version"]))
 
         self.setWindowIcon(QtGui.QIcon(self.settings["paths"]["icon"]["main"]))
@@ -145,9 +150,13 @@ class LissajousWindow(Qt.QMainWindow):
             # rcParams['ytick.color'] = 'red'
             # rcParams['axes.labelcolor'] = 'red'
             # rcParams['axes.edgecolor'] = 'red'
+            self.freq_z_lineedit.setVisible(True)
+            self.label_5.setVisible(True)
 
             MplCanvas(self._fig, mode='3d')
         else:
+            self.freq_z_lineedit.setVisible(False)
+            self.label_5.setVisible(False)
             MplCanvas(self._fig)
 
         self.plot_lissajous_figure()
@@ -209,7 +218,8 @@ class LissajousWindow(Qt.QMainWindow):
         return {
             "freq_x": float(self.freq_x_lineedit.text()),
             "freq_y": float(self.freq_y_lineedit.text()),
-            "phase": float(self.phase_lineedit.text()),
+            "freq_z": float(self.freq_z_lineedit.text()),
+            "phase": self.phase_lineedit.text(),
             "length": int(self.lengthSlider.value())
         } if params \
             else {"color": [self.color_combobox.currentText(),
