@@ -24,7 +24,8 @@ SETTINGS_MPL = \
                 "main": f"{os.path.join(application_path, 'files', 'icon.ico')}",
             },
 
-            "ui": f"{os.path.join(application_path, 'main_window.ui')}"
+            "ui": f"{os.path.join(application_path, 'main_window.ui')}",
+            # 'start': f"{os.path.join(application_path, 'create.ui')}"
         },
 
         "dirs": {

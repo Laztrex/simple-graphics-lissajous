@@ -45,7 +45,7 @@ class LissajousGenerator:
 
         self._resolution = resolution
 
-    def generate_figure(self, freq_x, freq_y, freq_z=1, phase='1.5708', a=1, b=1, c=1,
+    def generate_figure(self, freq_x, freq_y, freq_z=1, phase='0.5', a=1, b=1, c=1,
                         length=10, mode='2d'):
         """
         Функция генерирует фигуру (массивы x и y координат точек) с заданными частотами.
@@ -78,9 +78,13 @@ class LissajousGenerator:
         phi_x, phi_y, phi_z = phases
 
         t = dimension.get(mode, '2d')
-        x = a * np.sin(freq_x * t + phi_x)
-        y = b * np.sin(freq_y * t + phi_y)
-        z = c * np.sin(freq_z * t + phi_z)
-        # z = t
+        x = a * np.sin(freq_x * t + np.pi * phi_x)
+        y = b * np.sin(freq_y * t + np.pi * phi_y)
+        z = c * np.sin(freq_z * t)
+
+        # rose curve
+        # x = a * np.cos(freq_x * t + np.pi * phi_x) * np.cos(t)
+        # y = b * np.cos(freq_y * t + np.pi * phi_y) * np.sin(t)
+        # z = c * np.sin(freq_z * t + np.pi * phi_z)
 
         self.update_values(x, y, [None, z][mode == '3d'])

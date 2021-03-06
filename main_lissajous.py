@@ -27,9 +27,9 @@ def validation_form(form):
     """
 
     reg_ex_lineedit = QtCore.QRegExp("^([0-9]{1,2})[.]([0-9]{1,5})?$")
+
     reg_ex_phase = QtCore.QRegExp(r"^([0-9]{1,2})[.]([0-9]{1,5})\s?"
-                                  r"([0-9]{1,2})[.]([0-9]{1,5})\s?"
-                                  r"([0-9]{1,2})[.]([0-9]{1,5})?$")
+                                  r"([0-9]{1,2})[.]([0-9]{1,5})\s?")
 
     freq_x_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_x_lineedit)
     freq_y_validator = QtGui.QRegExpValidator(reg_ex_lineedit, form.freq_y_lineedit)
@@ -121,6 +121,12 @@ class LissajousWindow(Qt.QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon(self.settings["paths"]["icon"]["main"]))
 
+        Qt.QToolTip.setFont(QtGui.QFont('SansSerif', 10))
+        self.freq_x_lineedit.setToolTip('This is a <b>frequency X</b>')
+        self.freq_y_lineedit.setToolTip('This is a <b>frequency Y</b')
+        self.freq_z_lineedit.setToolTip('This is a <b>frequency Z</b>')
+        self.phase_lineedit.setToolTip('This is a <b>phase rel</b>. 0.5 = pi/2')
+
         self.plot_button.clicked.connect(self.plot_button_click_handler)
         self.save_button.clicked.connect(self.save_image_button_handler)
         self.proportion_button.clicked.connect(self.proportion_ratio_click_handler)
@@ -169,6 +175,17 @@ class LissajousWindow(Qt.QMainWindow):
 
         validation_form(self)
         settings = self.get_settings()
+
+        title_str = ''
+        values_ph = settings.get("phase").split()
+        for ph, axs in zip(values_ph, ['x', 'y', ]):
+            conv = float(ph).as_integer_ratio()
+
+            title_str = title_str + f'f_{axs}={round(conv[0], 3) if 1 < conv[0] < 9 else ""}' \
+                                    f'{["pi*", "pi/"][conv[0] < 9]}' \
+                                    f'{round(conv[1], 3) if 1 < conv[1] < 9 else ph}\n'
+        self.phase_lineedit.setToolTip(title_str.rstrip())
+
         self.plot_lissajous_figure(settings)
 
     def length_change_handler(self):
@@ -345,6 +362,27 @@ class LissajousWindow(Qt.QMainWindow):
             d.update({"3D": self.checkBox_3D.isChecked()})
             with open(path, 'w', encoding='utf-8') as write_file:
                 json.dump(d, write_file, indent=2, ensure_ascii=False)
+
+
+# class First(Qt.QMainWindow):
+#     def __init__(self, parent=None):
+#         super(First, self).__init__(parent)
+#         try:
+#             from settings import SETTINGS_MPL
+#         except:
+#             msg = Qt.QMessageBox()
+#             msg.setIcon(Qt.QMessageBox.Critical)
+#             msg.setText('Не найден файл настроек!')
+#             msg.exec_()
+#             sys.exit('File with settings was deleted!')
+#         uic.loadUi(SETTINGS_MPL["paths"]["start"], self)
+#
+#         self.pushButton.clicked.connect(self.on_pushButton_clicked)
+#         self.dialog = LissajousWindow(self)
+#
+#     def on_pushButton_clicked(self):
+#         self.hide()
+#         self.dialog.show()
 
 
 if __name__ == "__main__":
