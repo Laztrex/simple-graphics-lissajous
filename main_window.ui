@@ -406,7 +406,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Фаза (рад.)</string>
+          <string>Фаза (ratio)</string>
          </property>
         </widget>
        </item>
