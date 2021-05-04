@@ -120,3 +120,23 @@ main_lissajous.exe
 * Улучшать взаимодействие с настройками (плавное регулирование)
 * Добавить возможность анимирования
 * Добавить возможность отрисовки 3D-фигур
+
+
+
+## Вариант запуска docker на MacOS
+- Собрать образ. Например:
+~~~
+user_mac simple-graphics-lissajous % docker build -t qt_test . 
+~~~
+- Установить XQuartz
+- В настойках XQuartz дать разрешение подключения из клиентских сетей
+- команды:
+~~~
+IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+~~~
+~~~
+xhost +
+~~~
+~~~
+docker run --rm -it -v /tmp/.X11-unix:/tmp.X11-unix -e DISPLAY=$IP:0 qt_test
+~~~
