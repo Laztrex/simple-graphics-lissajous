@@ -121,7 +121,14 @@ main_lissajous.exe
 * Добавить возможность анимирования
 * Добавить возможность отрисовки 3D-фигур
 
-
+## Вариант запуска docker на Ubuntu20.04
+- Собрать образ. Например:
+~~~
+user_mac simple-graphics-lissajous % docker build -t qt_test . 
+~~~
+~~~
+docker run --rm -it -v $(pwd)/files:/tmp/files -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -u qtapp qt_test
+~~~
 
 ## Вариант запуска docker на MacOS
 - Собрать образ. Например:

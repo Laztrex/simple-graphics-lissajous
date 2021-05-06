@@ -17,7 +17,7 @@ COPY . /tmp/
 
 RUN pip3 install --no-cache-dir -r /tmp/requirements_docker.txt
 
-#RUN mkdir -p /files/pics/ && mkdir -p /files/presets/
-#RUN chmod -R 777 /files/gf
+RUN mkdir -p /files/pics/ && mkdir -p /files/presets/
+RUN chown qtapp:qtapp -R /tmp/files
 
 CMD ["python3", "main_lissajous.py"]
