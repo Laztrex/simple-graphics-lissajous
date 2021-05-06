@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN adduser --disabled-password --gecos '' app
+RUN adduser --disabled-password --gecos '' qtapp
 
 ENV LIBGL_ALWAYS_INDIRECT=1
 
@@ -17,7 +17,7 @@ COPY . /tmp/
 
 RUN pip3 install --no-cache-dir -r /tmp/requirements_docker.txt
 
-RUN mkdir -p /files/pics && mkdir -p /files/presets
-RUN chmod -R 777 /files/pics && chmod -R 777 /files/presets
+#RUN mkdir -p /files/pics/ && mkdir -p /files/presets/
+#RUN chmod -R 777 /files/gf
 
 CMD ["python3", "main_lissajous.py"]
