@@ -4,3 +4,5 @@ requirements.txt
 README.md
 exe_gen.sh
 /media
+/files/pics/**
+/files/presets/**

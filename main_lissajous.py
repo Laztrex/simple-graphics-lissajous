@@ -41,15 +41,6 @@ def validation_form(form):
     form.phase_lineedit.setValidator(phase_validator)
 
 
-def check_paths():
-    """
-    Проверка рекомендуемо-необходимых директорий
-    """
-
-    os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'pics'), exist_ok=True)
-    os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'presets'), exist_ok=True)
-
-
 class MplCanvas(FigureCanvas):
 
     def __init__(self, canvas_fig=None, mode=None, width=5, height=4):
@@ -89,8 +80,6 @@ class LissajousWindow(Qt.QMainWindow):
             sys.exit('File with settings was deleted!')
 
         self.settings = SETTINGS_MPL
-
-        check_paths()
 
         self.init_ui()
 

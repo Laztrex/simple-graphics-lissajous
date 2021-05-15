@@ -13,7 +13,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp/
-COPY . /tmp/
+COPY . .
 
 RUN pip3 install --no-cache-dir -r /tmp/requirements_docker.txt
 
