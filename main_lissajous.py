@@ -19,6 +19,14 @@ from PyQt5 import uic, QtGui, QtCore
 from lissajousgen import LissajousGenerator
 
 
+def check_paths():
+    """
+    Проверка рекомендуемо-необходимых директорий
+    """
+    os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'pics'), exist_ok=True)
+    os.makedirs(os.path.join(os.path.dirname(__file__), 'files', 'presets'), exist_ok=True)
+
+
 def validation_form(form):
     """
     Функция валидации входных параметров.
@@ -80,6 +88,8 @@ class LissajousWindow(Qt.QMainWindow):
             sys.exit('File with settings was deleted!')
 
         self.settings = SETTINGS_MPL
+
+        check_paths()
 
         self.init_ui()
 
